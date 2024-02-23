@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>請求書</title>
+</head>
+<body>
+    <h1>請求書</h1>
+    <p>取引先: <%= invoice.customer %></p>
+    <p>請求書番号: <%= invoice.invoiceNumber %></p>
+    <p>請求日: <%= invoice.invoiceDate %></p>
+    <p>お支払期限: <%= invoice.dueDate %></p>
+    <p>自社情報: <%= invoice.companyInfo %></p>
+    <h2>明細</h2>
+    <table border="1">
+        <tr>
+            <th>品名</th>
+            <th>数量</th>
+            <th>単位</th>
+            <th>単価</th>
+            <th>税率</th>
+            <th>金額</th>
+        </tr>
+        <% invoice.items.forEach(item => { %>
+            <tr>
+                <td><%= item.name %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.unit %></td>
+                <td><%= item.unitPrice %></td>
+                <td><%= item.taxRate %>%</td>
+                <td><%= item.amount %></td>
+            </tr>
+        <% }); %>
+    </table>
+    <h3>合計金額: <%= invoice.getTotalAmount() %>円</h3>
+</body>
+</html>
