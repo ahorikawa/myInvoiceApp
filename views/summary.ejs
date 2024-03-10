@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請求書一覧</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>請求書一覧</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>会社名</th>
+                <th>合計金額</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% summary.forEach(function(inv) { %>
+                <tr onclick="location.href='/invoices/<%= inv.id %>'" style="cursor:pointer;">
+                    <td><%= inv.id %></td>
+                    <td><%= inv.customer %></td>
+                    <td><%= inv.totalAmount %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

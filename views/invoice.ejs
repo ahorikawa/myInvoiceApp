@@ -3,23 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>請求書</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
     <h1>請求書</h1>
-    <p>取引先: <%= invoice.customer %></p>
-    <p>請求書番号: <%= invoice.invoiceNumber %></p>
-    <p>請求日: <%= invoice.invoiceDate %></p>
-    <p>お支払期限: <%= invoice.dueDate %></p>
-    <p>自社情報: <%= invoice.companyInfo %></p>
-    <h2>明細</h2>
-    <table border="1">
+    <h2>取引先情報</h1>
+    <p>取引先</p>
+    <div style="padding: 10px; margin-bottom: 10px; margin-left: 10px; border: 1px solid #333333; width:400px" >
+        <%= invoice.customer %>
+    </div>
+    <p>請求書番号</p>
+    <div style="padding: 10px; margin-bottom: 10px; margin-left: 10px; border: 1px solid #333333; width:400px" >
+        <%= invoice.invoiceNumber %>
+    </div>
+    <p>請求日: </p>
+    <div style="padding: 10px; margin-bottom: 10px; margin-left: 10px; border: 1px solid #333333; width:400px" >
+        <%= invoice.invoiceDate %>
+    </div>
+    <p>お支払期限</p>
+    <div style="padding: 10px; margin-bottom: 10px; margin-left: 10px; border: 1px solid #333333; width:400px" >
+        <%= invoice.dueDate %>
+    </div>
+    
+    <p>自社情報</p>
+    <div style="padding: 10px; margin-bottom: 10px; margin-left: 10px; border: 1px solid #333333; width:400px" >
+        <%= invoice.companyInfo %>
+    </div>
+
+    <h2>詳細</h2>
+    <table border="1" style = "margin-left: 10px; ">
         <tr>
-            <th>品名</th>
-            <th>数量</th>
-            <th>単位</th>
-            <th>単価</th>
-            <th>税率</th>
-            <th>金額</th>
+            <th style="width: 300px;">品名</th>
+            <th style="width: 70px;">数量</th>
+            <th style="width: 70px;">単位</th>
+            <th style="width: 70px;">単価</th>
+            <th style="width: 70px;">税率</th>
+            <th style="width: 70px;">金額</th>
         </tr>
         <% invoice.items.forEach(item => { %>
             <tr>
@@ -32,6 +51,6 @@
             </tr>
         <% }); %>
     </table>
-    <h3>合計金額: <%= invoice.getTotalAmount() %>円</h3>
+    <h3 style = "margin-left: 500px; ">合計金額: <%= invoice.getTotalAmount() %>円</h3>
 </body>
 </html>
