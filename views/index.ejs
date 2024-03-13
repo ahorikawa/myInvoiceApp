@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoices</title>
+</head>
+<body>
+    <h1>Invoices</h1>
+    <ul>
+        <% invoices.forEach(function(invoice) { %>
+            <li><a href="/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></li>
+        <% }); %>
+    </ul>
+</body>
+</html>
+    

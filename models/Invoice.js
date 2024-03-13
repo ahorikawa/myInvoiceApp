@@ -1,34 +1,13 @@
-// class Invoice {
-//     constructor(companyName, items) {
-//       this.companyName = companyName;
-//       this.items = items; // InvoiceItem の配列
-//     }
-  
-//     getTotalAmount() {
-//       return this.items.reduce((sum, item) => sum + item.amount, 0);
-//     }
-//   }
-
-
-
-
 class Invoice {
   constructor(companyName, items) {
-    this.companyName = companyName;
-    this.items = items; // InvoiceItem の配列
+      this.companyName = companyName;
+      this.items = items;
+      this.totalAmount = this.calculateTotal();
   }
 
-  getTotalAmount() {
-    return this.items.reduce((sum, item) => sum + item.amount, 0);
-  }
-}
-
-// models/InvoiceItem.js
-class InvoiceItem {
-  constructor(name, amount) {
-    this.name = name;
-    this.amount = amount;
+  calculateTotal() {
+      return this.items.reduce((total, item) => total + item.amount, 0);
   }
 }
 
-module.exports = { Invoice, InvoiceItem };
+module.exports = Invoice;
