@@ -5,12 +5,78 @@
     <title>Invoice</title>
 </head>
 <body>
-    <h1><%= invoice.companyName %></h1>
-    <ul>
-        <% invoice.items.forEach(function(item) { %>
-            <li><%= item.name %>: <%= item.amount %>円</li>
+
+    <h1 id="companyName"><%= invoice.companyName %></h1>
+    <input type="text" id="companyNameEdit" value="<%= invoice.companyName %>" style="display:none;">
+
+    <ul id="itemsList">
+        <% invoice.items.forEach(function(item, index) { %>
+            <li id="item<%= index %>">
+                <%= item.name %>: <%= item.amount %>円
+                <input type="text" class="itemEdit" value="<%= item.name %>: <%= item.amount %>円" style="display:none;">
+            </li>
         <% }); %>
     </ul>
+    
     <p>Total: <%= invoice.totalAmount %>円</p>
+    
+    <button id="editButton">編集</button>
+    <button id="saveButton" style="display:none;">保存</button>
+
+    <script>
+        document.getElementById('editButton').addEventListener('click', function() {
+            document.getElementById('companyName').style.display = 'none';
+            document.getElementById('companyNameEdit').style.display = '';
+            document.querySelectorAll('.itemEdit').forEach(function(el) {
+                el.style.display = '';
+            });
+            this.style.display = 'none';
+            document.getElementById('saveButton').style.display = '';
+        });
+
+        // 保存ボタンのクリックイベントを実装
+        document.getElementById('saveButton').addEventListener('click', function() {
+            // 編集された内容を取得
+            const companyName = document.getElementById('companyNameEdit').value;
+            const items = Array.from(document.querySelectorAll('.itemEdit')).map(function(input, index) {
+                const parts = input.value.split(': ');
+                return { name: parts[0], amount: parts[1].replace('円', '') };
+                console.log(companyName);
+            });
+
+            // fetch()を使ってAPIエンドポイントにPOSTリクエストを送信
+            fetch(`/api/invoices/<%= invoice.id %>`, {
+            // fetch(`/api/invoices/<%= invoice.id %>`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ companyName, items }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // 処理成功のメッセージ等を確認
+                // UIを「表示」モードに戻す
+                document.getElementById('companyName').innerText = companyName;
+                document.getElementById('companyName').style.display = '';
+                document.getElementById('companyNameEdit').style.display = 'none';
+                document.getElementById('editButton').style.display = '';
+                document.getElementById('saveButton').style.display = 'none';
+                document.querySelectorAll('.itemEdit').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+                // TODO: 保存された内容をUIに反映させる
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+        });
+    </script>
+
 </body>
 </html>

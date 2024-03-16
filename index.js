@@ -68,9 +68,9 @@ app.get('/invoices', (req, res) => {
   res.render('summary', {summary:summary});
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
 
 
 // 特定の請求書の詳細を取得

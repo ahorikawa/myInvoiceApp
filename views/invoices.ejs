@@ -8,8 +8,9 @@
     <h1>Invoices</h1>
     <ul>
         <% invoices.forEach(function(invoice) { %>
-            <li><a href="/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></li>
+            <li><a href="/api/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></li>
         <% }); %>
     </ul>
+    
 </body>
 </html>
