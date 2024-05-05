@@ -1,5 +1,3 @@
-// require('dotenv').config();
-
 // // Invoice Model
 // const mongoose = require('mongoose');
 // const Schema = mongoose.Schema;
@@ -81,6 +79,8 @@ const mongoose = require('mongoose'); // Mongooseを追加
 const app = express();
 const authRoutes = require('./routes/authRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+
+
 
 // MongoDBへの接続
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
