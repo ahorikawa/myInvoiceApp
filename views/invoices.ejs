@@ -3,14 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Invoices</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <h1>Invoices</h1>
-    <ul>
-        <% invoices.forEach(function(invoice) { %>
-            <li><a href="/api/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></li>
-        <% }); %>
-    </ul>
+    <h1>請求書一覧</h1>
+    <form id="invoicesForm">
+        <button type="button" id="createInvoiceButton">新規作成</button>
+        <table style="border: 1px solid black; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black; width: 15px;"> </th>
+                    <th style="border: 1px solid black; width: 15px;">ID</th>
+                    <th style="border: 1px solid black; width: 800px;">企業名</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% invoices.forEach(function(invoice) { %>
+                    <tr>
+                        <td style="border: 1px solid black;"><input type="checkbox" name="selectedInvoices" value="<%= invoice.id %>"></td>
+                        <td style="border: 1px solid black;"><%= invoice.id %></td>
+                        <td style="border: 1px solid black;"><a href="/api/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></td>
+
+                        
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <button type="button" id="deleteButton" class="hidden">Delete Selected</button>
+    </form>
+    
+    <script>
+        $(document).ready(function() {
+            $('input[type="checkbox"][name="selectedInvoices"]').change(function() {
+                if ($('input[type="checkbox"][name="selectedInvoices"]:checked').length > 0) {
+                    $('#deleteButton').removeClass('hidden');
+                } else {
+                    $('#deleteButton').addClass('hidden');
+                }
+            });
+
+            $('#deleteButton').click(function() {
+                const selectedIds = $('input[type="checkbox"][name="selectedInvoices"]:checked').map(function() {
+                    return this.value;
+                }).get();
+
+                // サーバーに削除リクエストを送信
+                fetch('/api/invoices/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: selectedIds }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("invoices.ejs", data);  
+                    window.location.reload(); // ページを再読み込みして更新
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+        // 新規作成ボタンのクリックイベントを設定
+        document.getElementById('createInvoiceButton').addEventListener('click', function() {
+                // 請求書の新規作成ページに遷移
+                window.location.href = "/api/invoices/new";
+            });
+    </script>
     
 </body>
 </html>

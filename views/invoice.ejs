@@ -6,76 +6,137 @@
 </head>
 <body>
 
-    <h1 id="companyName"><%= invoice.companyName %></h1>
-    <input type="text" id="companyNameEdit" value="<%= invoice.companyName %>" style="display:none;">
+    <h1 id="companyNameDisplay"><%= invoice.companyName %></h1>
+    <input type="text" id="companyNameInput" value="<%= invoice.companyName %>" style="display:none;">
 
-    <ul id="itemsList">
+    <table id="itemsTable" style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black; width: 800px;">Item Name</th>
+                <th style="border: 1px solid black; width: 300px;">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
         <% invoice.items.forEach(function(item, index) { %>
-            <li id="item<%= index %>">
-                <%= item.name %>: <%= item.amount %>円
-                <input type="text" class="itemEdit" value="<%= item.name %>: <%= item.amount %>円" style="display:none;">
-            </li>
+            <tr>
+                <td style="border: 1px solid">
+                    <span class="itemNameDisplay"><%= item.name %></span>
+                    <input type="text" class="itemNameInput" value="<%= item.name %>" style="display:none;">
+                </td>
+                <td style="border: 1px solid">
+                    <span class="itemAmountDisplay"><%= item.amount %>円</span>
+                    <input type="number" class="itemAmountInput" value="<%= item.amount %>" style="display:none;">
+                </td>
+            </tr>
         <% }); %>
-    </ul>
+        </tbody>
+    </table>
     
-    <p>Total: <%= invoice.totalAmount %>円</p>
+    <p id="totalAmount">Total: <%= invoice.totalAmount %>円</p>
     
     <button id="editButton">編集</button>
+    <button id="addItemButton" style="display:none;">アイテム追加</button>
     <button id="saveButton" style="display:none;">保存</button>
 
     <script>
         document.getElementById('editButton').addEventListener('click', function() {
-            document.getElementById('companyName').style.display = 'none';
-            document.getElementById('companyNameEdit').style.display = '';
-            document.querySelectorAll('.itemEdit').forEach(function(el) {
-                el.style.display = '';
+            document.getElementById('companyNameDisplay').style.display = 'none';
+            document.getElementById('companyNameInput').style.display = '';
+            document.querySelectorAll('.itemNameDisplay, .itemAmountDisplay').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('.itemNameInput, .itemAmountInput').forEach(function(input) {
+                input.style.display = '';
             });
             this.style.display = 'none';
             document.getElementById('saveButton').style.display = '';
+            document.getElementById('addItemButton').style.display = '';
         });
 
-        // 保存ボタンのクリックイベントを実装
-        document.getElementById('saveButton').addEventListener('click', function() {
-            // 編集された内容を取得
-            const companyName = document.getElementById('companyNameEdit').value;
-            const items = Array.from(document.querySelectorAll('.itemEdit')).map(function(input, index) {
-                const parts = input.value.split(': ');
-                return { name: parts[0], amount: parts[1].replace('円', '') };
-                console.log(companyName);
-            });
-
-            // fetch()を使ってAPIエンドポイントにPOSTリクエストを送信
-            fetch(`/api/invoices/<%= invoice.id %>`, {
-            // fetch(`/api/invoices/<%= invoice.id %>`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ companyName, items }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data); // 処理成功のメッセージ等を確認
-                // UIを「表示」モードに戻す
-                document.getElementById('companyName').innerText = companyName;
-                document.getElementById('companyName').style.display = '';
-                document.getElementById('companyNameEdit').style.display = 'none';
-                document.getElementById('editButton').style.display = '';
-                document.getElementById('saveButton').style.display = 'none';
-                document.querySelectorAll('.itemEdit').forEach(function(el) {
-                    el.style.display = 'none';
+        document.getElementById('addItemButton').addEventListener('click', function() {
+            // 表のtbodyを取得
+            const tbody = document.querySelector('#itemsTable tbody');
+            // 新しい行（tr要素）を作成
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td style="border: 1px solid">
+                <input type="text" class="itemNameInput" value="" placeholder="アイテム名">
+                </td>
+                <td style="border: 1px solid">
+                    <input type="number" class="itemAmountInput" value="" placeholder="金額">
+                    </td>`;
+                    // 作成した行をtbodyに追加
+                    tbody.appendChild(tr);
                 });
-                // TODO: 保存された内容をUIに反映させる
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
+
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const companyName = document.getElementById('companyNameInput').value;
+            // const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(input, index) {
+            //     return {
+            //         name: input.value,
+            //         amount: parseFloat(document.querySelectorAll('.itemAmountInput')[index].value)
+            //     };
+            // });
+            const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(itemInput, index) {
+                const amountInput = document.querySelectorAll('.itemAmountInput')[index];
+                return {
+                    name: itemInput.value,
+                    amount: parseFloat(amountInput.value)
+                };
             });
+
+            // Calculate the new total amount
+            const newTotalAmount = items.reduce(function(total, item) {
+                return total + item.amount;
+            }, 0);
+
+            console.log({ companyName, items, newTotalAmount });
+
+            // Update UI
+            document.getElementById('companyNameDisplay').innerText = companyName;
+            document.getElementById('companyNameDisplay').style.display = '';
+            document.getElementById('companyNameInput').style.display = 'none';
+            updateItemsDisplay(items);
+            document.querySelectorAll('.itemNameDisplay').forEach(function(el, index) {
+                el.innerText = items[index].name;
+                el.style.display = '';
+            });
+            document.querySelectorAll('.itemAmountDisplay').forEach(function(el, index) {
+                el.innerText = items[index].amount + '円';
+                el.style.display = '';
+            });
+            document.getElementById('totalAmount').innerText = 'Total: ' + newTotalAmount + '円';
+            // document.querySelectorAll('.itemNameInput, .itemAmountInput').forEach(function(input) {
+            //     input.style.display = 'none';
+            // });
+            document.querySelectorAll('.itemNameInput, .itemAmountInput').forEach(function(input) {
+                input.style.display = 'none';
+            });
+            document.getElementById('editButton').style.display = '';
+            this.style.display = 'none';
         });
+
+        function updateItemsDisplay(items) {
+            const itemsTableBody = document.querySelector('#itemsTable tbody');
+            // 既存のアイテム表示をクリア
+            itemsTableBody.innerHTML = '';
+            // 新しいアイテムの表示を追加
+            items.forEach(function(item) {
+                const row = document.createElement('tr');
+                const itemNameCell = document.createElement('td');
+                itemNameCell.style.border = '1px solid black';
+                itemNameCell.innerText = item.name;
+                
+                const itemAmountCell = document.createElement('td');
+                itemAmountCell.style.border = '1px solid black';
+                itemAmountCell.innerText = item.amount + '円';
+                
+                row.appendChild(itemNameCell);
+                row.appendChild(itemAmountCell);
+                itemsTableBody.appendChild(row);
+            });
+        }
+
     </script>
 
 </body>
