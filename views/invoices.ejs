@@ -23,9 +23,9 @@
             <tbody>
                 <% invoices.forEach(function(invoice) { %>
                     <tr>
-                        <td style="border: 1px solid black;"><input type="checkbox" name="selectedInvoices" value="<%= invoice.id %>"></td>
-                        <td style="border: 1px solid black;"><%= invoice.id %></td>
-                        <td style="border: 1px solid black;"><a href="/api/invoices/<%= invoice.id %>"><%= invoice.companyName %></a></td>
+                        <td style="border: 1px solid black;"><input type="checkbox" name="selectedInvoices" value="<%= invoice._id %>"></td>
+                        <td style="border: 1px solid black;"><%= invoice._id %></td>
+                        <td style="border: 1px solid black;"><a href="/api/invoices/<%= invoice._id %>"><%= invoice.companyName %></a></td>
 
                         
                     </tr>
