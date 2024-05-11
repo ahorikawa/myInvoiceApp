@@ -51,6 +51,8 @@
             this.style.display = 'none';
             document.getElementById('saveButton').style.display = '';
             document.getElementById('addItemButton').style.display = '';
+            document.getElementById('invoiceForm').querySelector('button[type="submit"]').style.display = '';
+
         });
 
         document.getElementById('addItemButton').addEventListener('click', function() {
@@ -136,8 +138,50 @@
                 itemsTableBody.appendChild(row);
             });
         }
+    document.getElementById('saveButton').addEventListener('click', function() {
+        const companyName = document.getElementById('companyNameInput').value;
+        const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(itemInput, index) {
+            const amountInput = document.querySelectorAll('.itemAmountInput')[index];
+            return {
+                name: itemInput.value,
+                amount: parseFloat(amountInput.value)
+            };
+        });
+        
+        // Calculate the new total amount
+        const newTotalAmount = items.reduce(function(total, item) {
+            return total + item.amount;
+        }, 0);
+        
+        // Set form values for companyName
+        document.getElementById('formCompanyName').value = companyName;
+    
+        // Clear previous inputs and setup new inputs for items
+        const itemsContainer = document.getElementById('formItemsContainer');
+        itemsContainer.innerHTML = ''; // Clear previous inputs
+        items.forEach(item => {
+            const nameInput = document.createElement('input');
+            nameInput.type = 'hidden';
+            nameInput.name = 'items[][name]';
+            nameInput.value = item.name;
+            itemsContainer.appendChild(nameInput);
+
+            const amountInput = document.createElement('input');
+            amountInput.type = 'hidden';
+            amountInput.name = 'items[][amount]';
+            amountInput.value = item.amount;
+            itemsContainer.appendChild(amountInput);
+        });
+        // Submit the form
+        document.getElementById('invoiceForm').submit();
+    });
+
 
     </script>
-
+<form id="invoiceForm" action="/invoice/create" method="POST">
+    <input type="hidden" name="companyName" id="formCompanyName">
+    <div id="formItemsContainer"></div>
+    <button type="submit" style="display:none;">請求書を保存</button>
+</form>
 </body>
 </html>
