@@ -18,7 +18,7 @@ const invoiceRoutes = require('./routes/invoiceRoutes');
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    loggerLevel: 'error' // ログレベルを 'error' に設定
+    // loggerLevel: 'error' // ログレベルを 'error' に設定
   };
 
 // MongoDBへの接続
@@ -33,7 +33,7 @@ mongoose.connect(process.env.DB_URI, options)
 //     .catch(err => console.log(err));
 
 
-// app.use(express.json());
+app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use('/api/invoices', invoiceRoutes);
@@ -45,7 +45,7 @@ app.use(cors());
 //     saveUninitialized: true
 // }));
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
 app.use(authRoutes);
