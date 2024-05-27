@@ -364,11 +364,16 @@
                     amount: parseFloat(amountInput.value)
                 };
             });
+            console.log("test");
 
             const invoiceId = '<%= invoice._id %>'; // EJSテンプレートからinvoiceのIDを取得
             const isUpdating = !!invoiceId && invoiceId !== 'undefined';
-            const formAction = isUpdating ? '/api/invoices/' + invoiceId : '/api/invoices/new';
+            // const formAction = isUpdating ? '/api/invoices/' + invoiceId : '/api/invoices/new';
+            const formAction = isUpdating ? '/api/invoices/' + invoiceId : '/api/invoices';
             const formMethod = isUpdating ? 'PUT' : 'POST';
+            console.log(isUpdating);
+            console.log(formAction);
+
 
             // 非同期リクエストでデータを送信
             fetch(formAction, {
@@ -389,7 +394,9 @@
             })
             .then(data => {
                 if (data.message === 'Invoice updated successfully' || data.message === 'Invoice created successfully') {
-                    window.location.href = '/invoices';
+                    console.log("here");
+                    window.location.href = '/api/invoices';
+
                 } else {
                     console.error('Operation failed:', data.message);
                 }
