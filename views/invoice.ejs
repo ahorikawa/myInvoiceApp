@@ -71,6 +71,7 @@
                     tbody.appendChild(tr);
                 });
 
+<<<<<<< HEAD
         document.getElementById('saveButton').addEventListener('click', function() {
             const companyName = document.getElementById('companyNameInput').value;
             // const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(input, index) {
@@ -85,6 +86,73 @@
                     name: itemInput.value,
                     amount: parseFloat(amountInput.value)
                 };
+=======
+                    const invoiceId = document.getElementById('invoiceId').value;
+                    const formAction = invoiceId ? '/api/invoices/' + invoiceId : '/api/invoices';
+                    const formMethod = invoiceId ? 'PUT' : 'POST';
+
+                    const companyName = document.getElementById('companyNameInput').value;
+                    const items = Array.from(document.querySelectorAll('.itemNameInput')).map((itemInput, index) => {
+                        const amountInput = document.querySelectorAll('.itemAmountInput')[index];
+                        return {
+                            name: itemInput.value,
+                            amount: parseFloat(amountInput.value)
+                        };
+                    });
+
+                    const invoiceData = {
+                        companyName: companyName,
+                        items: items
+                    };
+
+                    fetch(formAction, {
+                        method: formMethod,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(invoiceData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // ここで適切なフィードバックをユーザーに提供する
+                        // window.location.href = '/api/invoices/';
+                    })
+                    .catch(error => console.error('Error:', error));
+                ;
+//追加ここまで
+
+        // document.getElementById('saveButton').addEventListener('click', function() {
+        //     // 入力された会社名とアイテムデータを取得
+        //     const companyName = document.getElementById('companyNameInput').value;
+        //     const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(itemInput, index) {
+        //         const amountInput = document.querySelectorAll('.itemAmountInput')[index];
+        //         return {
+        //             name: itemInput.value,
+        //             amount: parseFloat(amountInput.value)  // 金額を数値に変換
+        //         };
+        //     });
+
+            // 入力データをフォームの隠しフィールドに設定
+            document.getElementById('formCompanyName').value = companyName;
+            const itemsContainer = document.getElementById('formItemsContainer');
+            itemsContainer.innerHTML = '';  // 以前の入力をクリア
+
+            items.forEach(item => {
+                // 商品名の入力フィールドを作成して追加
+                const nameInput = document.createElement('input');
+                nameInput.type = 'hidden';
+                nameInput.name = 'items[][name]';
+                nameInput.value = item.name;
+                itemsContainer.appendChild(nameInput);
+
+                // 金額の入力フィールドを作成して追加
+                const amountInput = document.createElement('input');
+                amountInput.type = 'hidden';
+                amountInput.name = 'items[][amount]';
+                amountInput.value = item.amount;
+                itemsContainer.appendChild(amountInput);
+>>>>>>> 1a3589e0 (環境切り分けを実装)
             });
 
             // Calculate the new total amount

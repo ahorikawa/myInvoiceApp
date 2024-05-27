@@ -1,4 +1,11 @@
-require('dotenv').config(); // 環境変数の設定を読み込み
+// require('dotenv').config(); // 環境変数の設定を読み込み
+const dotenv = require('dotenv');
+
+// NODE_ENV 環境変数をチェックし、それに応じて正しい .env ファイルを読み込む
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
+
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');

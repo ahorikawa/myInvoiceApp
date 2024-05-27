@@ -1,0 +1,145 @@
+[33mcommit b86bd38b460449965b074eab6ebe12bdc00b69d5[m[33m ([m[1;36mHEAD -> [m[1;32mhorikawa_dev[m[33m)[m
+Merge: e55a1c8b db8d3a4a
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sat May 11 20:23:03 2024 +0900
+
+    Merge branch 'horikawa_dev' of https://github.com/ahorikawa/myInvoiceApp into horikawa_dev
+
+[33mcommit e55a1c8b160d7c777155ae8a8a70cd9c081285ee[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sat May 11 20:17:11 2024 +0900
+
+    database接続するようapp.jsを変更
+
+[33mcommit ab35a1fd7f06a167feb1453241b969e1069c73da[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun May 5 20:25:01 2024 +0900
+
+    ..
+
+[33mcommit db8d3a4aa2987d2927495509f30d61a11d6f87fb[m
+Merge: 34ed8e83 01a9fcb4
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sun May 5 20:24:01 2024 +0900
+
+    Merge pull request #6 from ahorikawa/master
+    
+    .
+
+[33mcommit 34ed8e8361fbaad9f87dc93df65e03dd1c55898c[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun May 5 20:19:21 2024 +0900
+
+    .
+
+[33mcommit b45d953422e61f37ef57ca2ce3d40939e7e1aead[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun Mar 17 11:35:37 2024 +0900
+
+    最低限動くよう修正
+
+[33mcommit 01a9fcb41e4da2409726df74e914a28b4d0a0da0[m
+Merge: c5d1159a af633934
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sat Mar 16 14:42:41 2024 +0900
+
+    Merge pull request #5 from ahorikawa/horikawa_dev
+    
+    保存ボタンの追加
+
+[33mcommit af6339342ce91fd5ea5b18029e2c21304a80cac0[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sat Mar 16 14:41:53 2024 +0900
+
+    保存ボタンの追加
+
+[33mcommit c5d1159a23645c2fe792deb14349e8c8a5b259e4[m
+Merge: 1d794af3 fe2a2113
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Wed Mar 13 22:43:09 2024 +0900
+
+    Merge pull request #4 from ahorikawa/horikawa_dev
+    
+    router利用するように変更
+
+[33mcommit fe2a2113505daf4b3d6e6223d5197a0d8bcb06a3[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Wed Mar 13 22:42:02 2024 +0900
+
+    router利用するように変更
+
+[33mcommit 1d794af367d710fd84d600520d3e3857c958d2db[m
+Merge: 69938a8b 10a7dd85
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sun Mar 10 22:03:02 2024 +0900
+
+    Merge pull request #3 from ahorikawa/horikawa_dev
+    
+    全体更新
+
+[33mcommit 10a7dd8591d20afb1fcdd393943b13004d61a512[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun Mar 10 22:00:24 2024 +0900
+
+    全体更新
+
+[33mcommit 69938a8b8a7385e81583630351909ffaec5b597c[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 7f6592b0 a37d16c6
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sat Feb 24 11:30:31 2024 +0900
+
+    Merge pull request #2 from ahorikawa/horikawa_dev
+    
+    index.js 不要なコードの削除
+
+[33mcommit a37d16c6f456bb81a5691c6171df188aed6c3609[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sat Feb 24 11:27:15 2024 +0900
+
+    index.js 不要なコードの削除
+
+[33mcommit 7f6592b09882e8ca530d23effbcf6701cff2ec0b[m
+Merge: 26564365 285db316
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sat Feb 24 09:48:06 2024 +0900
+
+    Merge pull request #1 from ahorikawa/horikawa_dev
+    
+    index.jsを変更
+
+[33mcommit 285db316826219c0fdd9b53cb40a5b037b877c0f[m
+Merge: ae2939a7 26564365
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sat Feb 24 09:40:35 2024 +0900
+
+    Merge branch 'master' of https://github.com/ahorikawa/myInvoiceApp into horikawa_dev
+
+[33mcommit ae2939a75555ebdbd433902d777ed8c48211dd98[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Fri Feb 23 15:24:36 2024 +0900
+
+    viewを追加
+
+[33mcommit 265643655ad05b58069f1aa800268e94a2b4c06a[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Fri Feb 23 11:14:45 2024 +0900
+
+    index.jsを変更
+
+[33mcommit 98906da23b72747fdf3c7cd84d2441eb39617e89[m
+Author: ahorikawa <41528676+ahorikawa@users.noreply.github.com>
+Date:   Sun Feb 18 19:32:00 2024 +0900
+
+    Update index.js
+
+[33mcommit 0a8538f4de8fe4b2b53c7dff911f494b7adfc79c[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun Feb 18 17:24:46 2024 +0900
+
+    タイトルの変更
+
+[33mcommit 3859489eb4c62629c057f01ab675262b9448b919[m
+Author: ahorikawa <horikawa.akihiro0202@gmail.com>
+Date:   Sun Feb 18 17:09:40 2024 +0900
+
+    Initial commit
