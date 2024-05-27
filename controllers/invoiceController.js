@@ -34,6 +34,22 @@ exports.createInvoicePage = async (req, res) => {
     }
 };
 
+// exports.createInvoice = async (req, res) => {
+//     const { companyName, items } = req.body;
+//     const newInvoice = new Invoice({
+//         companyName: companyName,
+//         items: items,
+//         totalAmount: items.reduce((total, item) => total + item.amount, 0)
+//     });
+
+//     try {
+//         await newInvoice.save();
+//         res.status(201).json(newInvoice);  // JSONで新しいインボイスデータをクライアントに返す
+//     } catch (error) {
+//         res.status(400).json({ message: "Error creating invoice: " + error.message });
+//     }
+// };
+
 exports.updateInvoice = async (req, res) => {
     const { id } = req.params;
     const { companyName, items } = req.body;
