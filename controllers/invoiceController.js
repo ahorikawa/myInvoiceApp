@@ -8,31 +8,44 @@ exports.getInvoices = async (req, res) => {
 exports.getInvoice = async (req, res) => {
     const invoice = await Invoice.findById(req.params.id);
     if (invoice) {
-        res.render('invoice', { invoice });
+        res.render('detailinvoice', { invoice });
     } else {
         res.status(404).send('Invoice not found');
     }
 };
 
-// exports.createInvoicePage = (req, res) => {
-//     res.render('invoice', { invoice: new Invoice() });
-// };
+exports.createInvoice = (req, res) => {
+    res.render('addinvoice', { invoice: new Invoice() });
+};
 
 exports.createInvoicePage = async (req, res) => {
+    console.log("create");
     const { companyName, items } = req.body;
     const newInvoice = new Invoice({
         companyName: companyName,
         items: items,
         totalAmount: items.reduce((total, item) => total + item.amount, 0)  // 合計金額を計算
     });
-
     try {
-        await newInvoice.save();
-        res.redirect('/invoices');  // 請求書一覧ページにリダイレクト
+        const savedInvoice = await newInvoice.save();
+        console.log('Created Invoice ID:', savedInvoice._id); // ターミナルに新しいinvoiceIdを出力
+        res.status(201).json({ message: 'Invoice created successfully', invoice: savedInvoice });
     } catch (error) {
         res.status(400).send("Error creating invoice: " + error.message);
     }
 };
+
+//     try {
+//         await newInvoice.save();
+//         res.redirect('/invoices');  // 請求書一覧ページにリダイレクト
+//     } catch (error) {
+//         res.status(400).send("Error creating invoice: " + error.message);
+//     }
+// };
+
+// exports.renderCreateInvoicePage = (req, res) => {
+//     res.render('createInvoice'); // 新規作成ページをレンダリング
+// };
 
 // exports.createInvoice = async (req, res) => {
 //     const { companyName, items } = req.body;
@@ -51,6 +64,7 @@ exports.createInvoicePage = async (req, res) => {
 // };
 
 exports.updateInvoice = async (req, res) => {
+    console.log("update");
     const { id } = req.params;
     const { companyName, items } = req.body;
     const invoice = await Invoice.findByIdAndUpdate(id, { companyName, items }, { new: true });
@@ -62,6 +76,7 @@ exports.updateInvoice = async (req, res) => {
 };
 
 exports.deleteInvoices = async (req, res) => {
+    console.log(req);
     const { ids } = req.body; // 削除する請求書のIDの配列
     await Invoice.deleteMany({_id: { $in: ids }});
     res.json({ message: 'Selected invoices have been deleted successfully.' });
