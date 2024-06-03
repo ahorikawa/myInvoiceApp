@@ -8,14 +8,14 @@ exports.getInvoices = async (req, res) => {
 exports.getInvoice = async (req, res) => {
     const invoice = await Invoice.findById(req.params.id);
     if (invoice) {
-        res.render('invoice', { invoice });
+        res.render('detailinvoice', { invoice });
     } else {
         res.status(404).send('Invoice not found');
     }
 };
 
 exports.createInvoice = (req, res) => {
-    res.render('invoice', { invoice: new Invoice() });
+    res.render('addinvoice', { invoice: new Invoice() });
 };
 
 exports.createInvoicePage = async (req, res) => {

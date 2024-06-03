@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+</head>
+<body>
+
+    <h1 id="companyNameDisplay"><%= invoice.companyName %></h1>
+    <input type="text" id="companyNameInput" value="<%= invoice.companyName %>" style="display:none;">
+
+    <table id="itemsTable" style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black; width: 800px;">Item Name</th>
+                <th style="border: 1px solid black; width: 300px;">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% invoice.items.forEach(function(item, index) { %>
+            <tr>
+                <td style="border: 1px solid">
+                    <span class="itemNameDisplay"><%= item.name %></span>
+                    <input type="text" class="itemNameInput" value="<%= item.name %>" style="display:none;">
+                </td>
+                <td style="border: 1px solid">
+                    <span class="itemAmountDisplay"><%= item.amount %>円</span>
+                    <input type="number" class="itemAmountInput" value="<%= item.amount %>" style="display:none;">
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    
+    <p id="totalAmount">Total: <%= invoice.totalAmount %>円</p>
+    
+    <button id="editButton">編集</button>
+    <button id="addItemButton" style="display:none;">アイテム追加</button>
+    <button id="saveButton" style="display:none;">保存</button>
+
+    <script>
+        document.getElementById('editButton').addEventListener('click', function() {
+            document.getElementById('companyNameDisplay').style.display = 'none';
+            document.getElementById('companyNameInput').style.display = '';
+            document.querySelectorAll('.itemNameDisplay, .itemAmountDisplay').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('.itemNameInput, .itemAmountInput').forEach(function(input) {
+                input.style.display = '';
+            });
+            this.style.display = 'none';
+            document.getElementById('saveButton').style.display = '';
+            document.getElementById('addItemButton').style.display = '';
+        });
+
+        document.getElementById('addItemButton').addEventListener('click', function() {
+            const tbody = document.querySelector('#itemsTable tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td style="border: 1px solid">
+                <input type="text" class="itemNameInput" value="" placeholder="アイテム名">
+            </td>
+            <td style="border: 1px solid">
+                <input type="number" class="itemAmountInput" value="" placeholder="金額">
+            </td>`;
+            tbody.appendChild(tr);
+        });
+
+
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const companyName = document.getElementById('companyNameInput').value;
+            const items = Array.from(document.querySelectorAll('.itemNameInput')).map(function(itemInput, index) {
+                const amountInput = document.querySelectorAll('.itemAmountInput')[index];
+                return {
+                    name: itemInput.value,
+                    amount: parseFloat(amountInput.value)
+                };
+            });
+
+
+            const invoiceId = '<%= invoice._id %>'; // EJSテンプレートからinvoiceのIDを取得
+            const isUpdating = !!invoiceId && invoiceId !== 'undefined';
+            // const formAction = isUpdating ? '/api/invoices/' + invoiceId : '/api/invoices/new';
+            const formAction = isUpdating ? '/api/invoices/' + invoiceId : '/api/invoices';
+            const formMethod = isUpdating ? 'PUT' : 'POST';
+            console.log(isUpdating);
+            console.log(formAction);
+            
+
+            // 非同期リクエストでデータを送信
+            fetch('/api/invoices/new', {
+            // fetch(formAction, {
+                method: 'POST',
+                // method: formMethod,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    companyName: companyName,
+                    items: items
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.message === 'Invoice updated successfully' || data.message === 'Invoice created successfully') {
+                    console.log("here");
+                    window.location.href = '/api/invoices';
+
+                } else {
+                    console.error('Operation failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+        });
+
+    </script>
+    
+    <form id="invoiceForm" action="/invoice/create" method="POST">
+        <input type="hidden" name="companyName" id="formCompanyName">
+        <div id="formItemsContainer"></div>
+        <button type="submit" style="display:none;">請求書を保存</button>
+    </form>
+</body>
+</html>
